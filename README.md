@@ -29,7 +29,7 @@ Scripts for a Flask deployment demo (now deprecated, but was the original method
 
 The documents used as the corpus for NOLEdge, as well as the source of documents to annotate for training.
 
-### [Colab Notebooks](https://github.com/comacrae/noledge/tree/main/chrome-extension)
+### [Colab Notebooks](https://github.com/comacrae/noledge/tree/main/colab-notebooks)
 
 The Google Colab notebooks I used for the majority of my workflow, from training to evaluating models and creating plots.
 
@@ -40,6 +40,14 @@ The source code for the demo Chrome Extension I used to deploy my finetuned mode
 ### [Thesis](https://github.com/comacrae/noledge/tree/main/thesis)
 
 Final draft of my Honors in the Major thesis as well as images and Bibtex references.
+
+### [Evaluations](https://github.com/comacrae/noledge/tree/main/evaluations)
+
+Plots and JSON data used to create them. Google Colab notebooks used to create the plots are in the notebook section.
+
+### [Training Sets](https://github.com/comacrae/noledge/tree/main/training-sets)
+
+The training sets used to train the various forms of the model. Includes the unsplit version, the unaugmented (but split) version, and the augmented versions.
 
 ## Hugging Face Model
 [Go here to check out/download my finetuned model](https://huggingface.co/comacrae/roberta-paraphrasev2)
