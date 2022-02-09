@@ -1,0 +1,23 @@
+{
+  "name": "NOLEdge",
+  "description": "Intelligent Search Tool for Florida State University Computer Science Department",
+  "version": "1.0",
+  "manifest_version": 3,
+  "host_permissions": [ "*PUT YOUR EC2 URL HERE*" ],
+  "permissions": ["tabs", "scripting"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+    "512": "/images/demo.png"
+ 
+      
+    },
+   "content_scripts": [{
+	  "js": ["popup_v3.js"],
+	  "css": ["popup.css"]
+   }]
+  },
+  "icons": {
+    "512" : "/images/demo.png"
+  }
+}

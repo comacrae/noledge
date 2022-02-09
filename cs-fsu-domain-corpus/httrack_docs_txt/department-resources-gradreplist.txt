@@ -1,0 +1,46 @@
+gradreplist | gradreplist The Graduation Representative List (updated 03/21/02) 0 Turner
+0 Burmester
+0 Srinivasan
+1 Gaitros
+1 Gaede
+1 van Engelen
+1 Yuan
+1 Yasinsac
+1 Douglas
+1 Mascagni
+1 Desmedt
+1 Liu
+1 Banks
+2 Gallivan
+2 Schwartz
+2 McDuffie
+3 Levitz
+3 Baker
+3 Kohout
+4 Whalley
+5 Lacher
+6 Leach
+8 Riccardi
+8 Hawkes History of Updates Initialized Fall 94.
+Includes credit for Fall 1994: Leach, Levitz, Schwartz
+   (note: Levitz got 1 current credit plus history)
+Includes credit for Spring 95: Kohout, Kuncicky, Riccardi
+Includes credit for Summer 95: Baker
+Includes credit for Fall 95:   McDuffie
+Includes credit for Spring 96: Kacmar, Riccardi
+Includes credit for Summer 96: Baker, Whalley
+Includes credit for Fall 96:   Schwartz
+Includes credit for Spring 97: Baker, Kacmar, Whalley
+Includes credit for Summer 97: Hruska, Lacher
+Includes credit for Fall 97:   McDuffie, Whalley
+Includes credit for Spring 98: Gallivan, Kohout
+Includes credit for Summer 98: Gaede
+Includes credit for Fall 98:   Yuan, van Engelen
+Includes credit for Spring 99: Gallivan, Lacher
+Includes credit for Summer 99: Gaitros
+Includes credit for Fall 99: Yasinsac, Hawkes
+Includes credit for Spring 00: Douglas, Mascagni
+Includes credit for Fall 00: Riccardi
+Includes credit for Spring 01: Desmedt, Hawkes
+Includes credit for Summer 01: Liu
+Includes credit for Fall 01: Banks, Hawkes

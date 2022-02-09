@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>NOLEdge</title>
+		<link rel="stylesheet" href="popup.css">
+	</head>
+	<body> <input type="button" id="home">Home Page</button></body> 
+	<body>
+		<form id="queryForm">
+			<label for="question">Enter Question Here:</label>
+			<input id="question" name="question">
+			<label for="top_k">Select Number of Answers:</label>
+			<input type="range" id="top_k" min="1" max="10" value="1" name="top_k">
+			<input type="submit" value="Submit">
+		</form>
+		<div>
+			<table id="answerTable">
+			</table>
+		</div>
+		<script src="popup_v3.js"></script>
+
+	</body>
+</html>

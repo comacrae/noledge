@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<!-- saved from url=(0043)https://www.tomforth.co.uk/chromeextension/ -->
+<html lang="en-GB"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="shortcut_icon" href="https://www.tomforth.co.uk/chromeextension/favicon.ico">
+    <!--<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">-->
+    <meta content="en-gb" http-equiv="Content-Language">
+    
+    <meta id="viewportid" name="viewport" content="width=device-width">
+    <title>
+        Building a really simple Chrome extension
+    </title>
+    <meta property="og:title" name="title" content="Building a really simple Chrome extension">
+    <link href="./Building a really simple Chrome extension_files/tforthstyle.css" rel="stylesheet" type="text/css">
+	
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+	
+	<script src="./Building a really simple Chrome extension_files/cb=gapi.loaded_1" async=""></script><script src="./Building a really simple Chrome extension_files/cb=gapi(1).loaded_0" async=""></script><script src="./Building a really simple Chrome extension_files/all.js" async="" crossorigin="anonymous"></script><script type="text/javascript" async="" src="./Building a really simple Chrome extension_files/plusone.js" gapi_processed="true"></script><script id="twitter-wjs" src="./Building a really simple Chrome extension_files/widgets.js"></script><script id="facebook-jssdk" src="./Building a really simple Chrome extension_files/all(1).js"></script><script type="text/javascript" async="" src="./Building a really simple Chrome extension_files/analytics.js"></script><script async="" src="./Building a really simple Chrome extension_files/js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-43149701-1');
+    </script>
+	
+
+	 <script type="text/javascript" async="" src="./Building a really simple Chrome extension_files/embed.js"></script><link rel="prefetch" as="style" href="https://c.disquscdn.com/next/embed/styles/lounge.e16bb81d3982e913e07bd7f31be71a6c.css"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/common.bundle.ee2555081038338ea4f41cbb3ea1bc17.js"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/embed/lounge.bundle.106faac21c6c76e0298d1a260d46eaf3.js"><link rel="prefetch" as="script" href="https://disqus.com/next/config.js"><script async="" id="dsq_recs_scr" src="./Building a really simple Chrome extension_files/recommendations.js"></script><link rel="prefetch" as="style" href="https://c.disquscdn.com/next/recommendations/styles/recommendations.eff219b98b7c4167b4b289065f36f391.css"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/recommendations/common.bundle.72e35017d98ea7f210961b0d5c38444a.js"><link rel="prefetch" as="script" href="https://c.disquscdn.com/next/recommendations/recommendations.bundle.37a289e2ed6acdf6cbf01e83d4fb3ce6.js"><link rel="prefetch" as="script" href="https://disqus.com/next/config.js"><script charset="utf-8" src="./Building a really simple Chrome extension_files/button.5573c974dc31bbdab5ea7923a0bd5cf3.js"></script><style type="text/css" data-fbcssmodules="css:fb.css.base css:fb.css.dialog css:fb.css.iframewidget css:fb.css.customer_chat_plugin_iframe">.fb_hidden{position:absolute;top:-10000px;z-index:10001}.fb_reposition{overflow:hidden;position:relative}.fb_invisible{display:none}.fb_reset{background:none;border:0;border-spacing:0;color:#000;cursor:auto;direction:ltr;font-family:"lucida grande", tahoma, verdana, arial, sans-serif;font-size:11px;font-style:normal;font-variant:normal;font-weight:normal;letter-spacing:normal;line-height:1;margin:0;overflow:visible;padding:0;text-align:left;text-decoration:none;text-indent:0;text-shadow:none;text-transform:none;visibility:visible;white-space:normal;word-spacing:normal}.fb_reset>div{overflow:hidden}@keyframes fb_transform{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}.fb_animate{animation:fb_transform .3s forwards}
+.fb_dialog{background:rgba(82, 82, 82, .7);position:absolute;top:-10000px;z-index:10001}.fb_dialog_advanced{border-radius:8px;padding:10px}.fb_dialog_content{background:#fff;color:#373737}.fb_dialog_close_icon{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 0 transparent;cursor:pointer;display:block;height:15px;position:absolute;right:18px;top:17px;width:15px}.fb_dialog_mobile .fb_dialog_close_icon{left:5px;right:auto;top:5px}.fb_dialog_padding{background-color:transparent;position:absolute;width:1px;z-index:-1}.fb_dialog_close_icon:hover{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -15px transparent}.fb_dialog_close_icon:active{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yq/r/IE9JII6Z1Ys.png) no-repeat scroll 0 -30px transparent}.fb_dialog_iframe{line-height:0}.fb_dialog_content .dialog_title{background:#6d84b4;border:1px solid #365899;color:#fff;font-size:14px;font-weight:bold;margin:0}.fb_dialog_content .dialog_title>span{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/yd/r/Cou7n-nqK52.gif) no-repeat 5px 50%;float:left;padding:5px 0 7px 26px}body.fb_hidden{height:100%;left:0;margin:0;overflow:visible;position:absolute;top:-10000px;transform:none;width:100%}.fb_dialog.fb_dialog_mobile.loading{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/ya/r/3rhSv5V8j3o.gif) white no-repeat 50% 50%;min-height:100%;min-width:100%;overflow:hidden;position:absolute;top:0;z-index:10001}.fb_dialog.fb_dialog_mobile.loading.centered{background:none;height:auto;min-height:initial;min-width:initial;width:auto}.fb_dialog.fb_dialog_mobile.loading.centered #fb_dialog_loader_spinner{width:100%}.fb_dialog.fb_dialog_mobile.loading.centered .fb_dialog_content{background:none}.loading.centered #fb_dialog_loader_close{clear:both;color:#fff;display:block;font-size:18px;padding-top:20px}#fb-root #fb_dialog_ipad_overlay{background:rgba(0, 0, 0, .4);bottom:0;left:0;min-height:100%;position:absolute;right:0;top:0;width:100%;z-index:10000}#fb-root #fb_dialog_ipad_overlay.hidden{display:none}.fb_dialog.fb_dialog_mobile.loading iframe{visibility:hidden}.fb_dialog_mobile .fb_dialog_iframe{position:sticky;top:0}.fb_dialog_content .dialog_header{background:linear-gradient(from(#738aba), to(#2c4987));border-bottom:1px solid;border-color:#043b87;box-shadow:white 0 1px 1px -1px inset;color:#fff;font:bold 14px Helvetica, sans-serif;text-overflow:ellipsis;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0;vertical-align:middle;white-space:nowrap}.fb_dialog_content .dialog_header table{height:43px;width:100%}.fb_dialog_content .dialog_header td.header_left{font-size:12px;padding-left:5px;vertical-align:middle;width:60px}.fb_dialog_content .dialog_header td.header_right{font-size:12px;padding-right:5px;vertical-align:middle;width:60px}.fb_dialog_content .touchable_button{background:linear-gradient(from(#4267B2), to(#2a4887));background-clip:padding-box;border:1px solid #29487d;border-radius:3px;display:inline-block;line-height:18px;margin-top:3px;max-width:85px;padding:4px 12px;position:relative}.fb_dialog_content .dialog_header .touchable_button input{background:none;border:none;color:#fff;font:bold 12px Helvetica, sans-serif;margin:2px -12px;padding:2px 6px 3px 6px;text-shadow:rgba(0, 30, 84, .296875) 0 -1px 0}.fb_dialog_content .dialog_header .header_center{color:#fff;font-size:16px;font-weight:bold;line-height:18px;text-align:center;vertical-align:middle}.fb_dialog_content .dialog_content{background:url(https://static.xx.fbcdn.net/rsrc.php/v3/y9/r/jKEcVPZFk-2.gif) no-repeat 50% 50%;border:1px solid #4a4a4a;border-bottom:0;border-top:0;height:150px}.fb_dialog_content .dialog_footer{background:#f5f6f7;border:1px solid #4a4a4a;border-top-color:#ccc;height:40px}#fb_dialog_loader_close{float:left}.fb_dialog.fb_dialog_mobile .fb_dialog_close_icon{visibility:hidden}#fb_dialog_loader_spinner{animation:rotateSpinner 1.2s linear infinite;background-color:transparent;background-image:url(https://static.xx.fbcdn.net/rsrc.php/v3/yD/r/t-wz8gw1xG1.png);background-position:50% 50%;background-repeat:no-repeat;height:24px;width:24px}@keyframes rotateSpinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.fb_iframe_widget{display:inline-block;position:relative}.fb_iframe_widget span{display:inline-block;position:relative;text-align:justify}.fb_iframe_widget iframe{position:absolute}.fb_iframe_widget_fluid_desktop,.fb_iframe_widget_fluid_desktop span,.fb_iframe_widget_fluid_desktop iframe{max-width:100%}.fb_iframe_widget_fluid_desktop iframe{min-width:220px;position:relative}.fb_iframe_widget_lift{z-index:1}.fb_iframe_widget_fluid{display:inline}.fb_iframe_widget_fluid span{width:100%}
+.fb_mpn_mobile_landing_page_slide_out{animation-duration:200ms;animation-name:fb_mpn_landing_page_slide_out;transition-timing-function:ease-in}.fb_mpn_mobile_landing_page_slide_out_from_left{animation-duration:200ms;animation-name:fb_mpn_landing_page_slide_out_from_left;transition-timing-function:ease-in}.fb_mpn_mobile_landing_page_slide_up{animation-duration:500ms;animation-name:fb_mpn_landing_page_slide_up;transition-timing-function:ease-in}.fb_mpn_mobile_bounce_in{animation-duration:300ms;animation-name:fb_mpn_bounce_in;transition-timing-function:ease-in}.fb_mpn_mobile_bounce_out{animation-duration:300ms;animation-name:fb_mpn_bounce_out;transition-timing-function:ease-in}.fb_mpn_mobile_bounce_out_v2{animation-duration:300ms;animation-name:fb_mpn_fade_out;transition-timing-function:ease-in}.fb_customer_chat_bounce_in_v2{animation-duration:300ms;animation-name:fb_bounce_in_v2;transition-timing-function:ease-in}.fb_customer_chat_bounce_in_from_left{animation-duration:300ms;animation-name:fb_bounce_in_from_left;transition-timing-function:ease-in}.fb_customer_chat_bounce_out_v2{animation-duration:300ms;animation-name:fb_bounce_out_v2;transition-timing-function:ease-in}.fb_customer_chat_bounce_out_from_left{animation-duration:300ms;animation-name:fb_bounce_out_from_left;transition-timing-function:ease-in}.fb_customer_chat_bubble_animated_no_badge{box-shadow:0 3px 12px rgba(0, 0, 0, .15);transition:box-shadow 150ms linear}.fb_customer_chat_bubble_animated_no_badge:hover{box-shadow:0 5px 24px rgba(0, 0, 0, .3)}.fb_customer_chat_bubble_animated_with_badge{box-shadow:-5px 4px 14px rgba(0, 0, 0, .15);transition:box-shadow 150ms linear}.fb_customer_chat_bubble_animated_with_badge:hover{box-shadow:-5px 8px 24px rgba(0, 0, 0, .2)}.fb_invisible_flow{display:inherit;height:0;overflow-x:hidden;width:0}.fb_new_ui_mobile_overlay_active{overflow:hidden}@keyframes fb_mpn_landing_page_slide_in{0%{border-radius:50%;margin:0 24px;width:60px}40%{border-radius:18px}100%{margin:0 12px;width:100% - 24px}}@keyframes fb_mpn_landing_page_slide_in_from_left{0%{border-radius:50%;left:12px;margin:0 24px;width:60px}40%{border-radius:18px}100%{left:12px;margin:0 12px;width:100% - 24px}}@keyframes fb_mpn_landing_page_slide_out{0%{margin:0 12px;width:100% - 24px}60%{border-radius:18px}100%{border-radius:50%;margin:0 24px;width:60px}}@keyframes fb_mpn_landing_page_slide_out_from_left{0%{left:12px;width:100% - 24px}60%{border-radius:18px}100%{border-radius:50%;left:12px;width:60px}}@keyframes fb_mpn_landing_page_slide_up{0%{bottom:0;opacity:0}100%{bottom:24px;opacity:1}}@keyframes fb_mpn_bounce_in{0%{opacity:.5;top:100%}100%{opacity:1;top:0}}@keyframes fb_mpn_fade_out{0%{bottom:30px;opacity:1}100%{bottom:0;opacity:0}}@keyframes fb_mpn_bounce_out{0%{opacity:1;top:0}100%{opacity:.5;top:100%}}@keyframes fb_bounce_in_v2{0%{opacity:0;transform:scale(0, 0);transform-origin:bottom right}50%{transform:scale(1.03, 1.03);transform-origin:bottom right}100%{opacity:1;transform:scale(1, 1);transform-origin:bottom right}}@keyframes fb_bounce_in_from_left{0%{opacity:0;transform:scale(0, 0);transform-origin:bottom left}50%{transform:scale(1.03, 1.03);transform-origin:bottom left}100%{opacity:1;transform:scale(1, 1);transform-origin:bottom left}}@keyframes fb_bounce_out_v2{0%{opacity:1;transform:scale(1, 1);transform-origin:bottom right}100%{opacity:0;transform:scale(0, 0);transform-origin:bottom right}}@keyframes fb_bounce_out_from_left{0%{opacity:1;transform:scale(1, 1);transform-origin:bottom left}100%{opacity:0;transform:scale(0, 0);transform-origin:bottom left}}@keyframes fb_bounce_out_v2_mobile_chat_started{0%{opacity:1;top:0}100%{opacity:0;top:20px}}@keyframes fb_customer_chat_bubble_bounce_in_animation{0%{bottom:6pt;opacity:0;transform:scale(0, 0);transform-origin:center}70%{bottom:18pt;opacity:1;transform:scale(1.2, 1.2)}100%{transform:scale(1, 1)}}@keyframes slideInFromBottom{0%{opacity:.1;transform:translateY(100%)}100%{opacity:1;transform:translateY(0)}}@keyframes slideInFromBottomDelay{0%{opacity:0;transform:translateY(100%)}97%{opacity:0;transform:translateY(100%)}100%{opacity:1;transform:translateY(0)}}</style></head>
+
+<body data-new-gr-c-s-check-loaded="14.1023.0" data-gr-ext-installed="">
+    <div class="contentBackground">
+        <header>
+            <img src="./Building a really simple Chrome extension_files/Malham_Tom.jpg" id="headerheader" alt="A panoramic photograph of Malham Cove in North Yorkshire.">
+            <nav style="text-align:center">
+			                <p class="bigList">
+                <a href="https://www.tomforth.co.uk/allposts">All my posts</a>&nbsp;&nbsp;
+				<a href="https://www.tomforth.co.uk/allposts#Data">Data</a>
+				<a href="https://www.tomforth.co.uk/allposts#Localpower">Local power</a>
+				<a href="https://www.tomforth.co.uk/allposts#Regionalgrowth">Regional growth</a>
+				<a href="https://www.tomforth.co.uk/allposts#Economics">Economics</a>
+				<a href="https://www.tomforth.co.uk/allposts#Technology">Technology</a>
+				<a href="https://www.tomforth.co.uk/allposts#Transport">Transport</a>
+				<a href="https://www.tomforth.co.uk/allposts#Politics">Politics</a>
+				<a href="https://www.tomforth.co.uk/allposts#R&amp;D">R&amp;D</a>
+				<a href="https://www.tomforth.co.uk/allposts#Inequality">Inequality</a>
+				<a href="https://www.tomforth.co.uk/allposts#Housing">Housing</a>
+				<a href="https://www.tomforth.co.uk/allposts#Design">Design</a>
+				<a href="https://www.tomforth.co.uk/allposts#TheEU">The EU</a>
+				<a href="https://www.tomforth.co.uk/allposts#PDFs">PDFs</a>
+				<a href="https://www.tomforth.co.uk/allposts#France">France</a>
+				<a href="https://www.tomforth.co.uk/allposts#Agglomeration">Agglomeration</a>
+				<a href="https://www.tomforth.co.uk/allposts#Health">Health</a>
+				<a href="https://www.tomforth.co.uk/allposts#Education">Education</a>
+				<a href="https://www.tomforth.co.uk/allposts#Techforgood">Tech for good</a>
+				<a href="https://www.tomforth.co.uk/allposts#Productivity">Productivity</a>
+				<a href="https://www.tomforth.co.uk/allposts#Brexit">Brexit</a>
+				<a href="https://www.tomforth.co.uk/allposts#TheUK">The UK</a>
+				<a href="https://www.tomforth.co.uk/allposts#Covid-19">Covid-19</a>
+				</p>
+            </nav>
+        </header>    <div class="blackBody">
+        <h2>Building a <em>really</em> simple page-scraping Chrome extension.</h2>
+        <p class="updates" style="text-align:center">and understanding how it works.</p>
+        <p class="date"><span class="author" itemprop="author publisher" itemscope="" itemtype="http://schema.org/Person"><span itemprop="name">Tom Forth</span></span>,
+            <time datetime="2014-05-25" itemprop="datePublished">25 May 2014</time>
+        </p>
+        <p>Want to parse the content of a website? More comfortable coding in javascript and displaying your results in HTML than you are using <a href="http://scrapy.org/">Scrapy</a> at a Python command prompt? A google Chrome extension might be perfect for you.</p>
+        <p>Sadly, the <a href="http://markashleybell.com/building-a-simple-google-chrome-extension.html">best guide</a> to building a simple but functional page-scraping Chrome extension is quite complicated. So I’ve learned from it and written a much simpler Hello World Chrome extension for page scraping.</p>
+        <p><strong>Download</strong> the <a href="https://www.tomforth.co.uk/chromeextension/ChromeExtensionScrapingHelloWorld.zip">source code</a> and the <a href="https://www.tomforth.co.uk/chromeextension/ChromeExtensionScrapingHelloWorld.crx">packed extension</a>, and have a look, it's less than 40 lines of code. If you need help installing it follow <a href="https://developer.chrome.com/extensions/getstarted">Google's instructions</a>. For the important part of understanding how it works, I've drawn some pictures.</p>
+        <h3>Get content from a page.</h3>
+        <p>My example will get content from the currently loaded page and display it in the Chrome extension's popup. Here the active tab is on Nokia's homepage and that title is displayed in my extension's popup.</p>
+        <img class="centredImage large" src="./Building a really simple Chrome extension_files/examplepic.png">
+        <h3>Bundle an extension.</h3>
+        <p>There are five important parts to the extension. The logo, the popup page's html file, the popup page's javascript file, and the manifest.json file which tells Chrome how to bundle these files together into an extension.</p>
+        <img class="centredImage large" src="./Building a really simple Chrome extension_files/pic2.png">
+        <h3>Inject the payload.</h3>
+        <p>The fifth important part of the extension solves the cross-site scripting problem. An extension is effectively a little website, and for <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">sensible security reasons</a> scripts from one website can't easily access the content on another website. popup.js can access the content on popup.html and change it, but it's blocked from accessing the content of the currently loaded web page unless that page specifically allows it, which it almost never will.</p>
+        <p>Chrome has access to both pages and you can tell it to inject and run the payload.js script in the current webpage. Once injected the payload.js script can access and change the content of the currently active tab and send messages back to the popup.js script using the chrome runtime messaging service. Since we've set popup.js as a persistent background script in the extension manifest it will keep listening for messages from popup.js until Chrome closes.</p>
+        <img class="centredImage large" src="./Building a really simple Chrome extension_files/pic3.png">
+        <h3>Add more features.</h3>
+        <p>If it all works properly, your extension should display the current tab's title. Once you've seen how it works you can extend this Hello World extension however you like. The payload.js script can do anything it likes with the current web page, including navigating somewhere else, or clicking a link. The chrome runtime messaging service supports JSON objects so you can easily pass formatted data between your extension and the current page.</p>
+        <img class="centredImage medium" src="./Building a really simple Chrome extension_files/pic4.png">
+        <p>Thanks for reading, and in case you missed the first download link,</p>
+        <h3>Download the <a href="https://www.tomforth.co.uk/chromeextension/ChromeExtensionScrapingHelloWorld.zip">sourcecode</a> and the <a href="https://www.tomforth.co.uk/chromeextension/ChromeExtensionScrapingHelloWorld.crx">packed extension</a>.</h3>
+        <div style="text-align: center" id="social">
+            <!-- I have a facebook like button so I need this. -->
+            <div id="fb-root" class=" fb_reset"><div style="position: absolute; top: -10000px; width: 0px; height: 0px;"><div></div></div></div>
+            <script>
+                (function(d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0];
+                    if (d.getElementById(id)) return;
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=299378450105936";
+                    fjs.parentNode.insertBefore(js, fjs);
+                }(document, 'script', 'facebook-jssdk'));
+
+            </script>
+
+            <!-- share to twitter code -->
+            <iframe id="twitter-widget-0" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" class="twitter-share-button twitter-share-button-rendered twitter-tweet-button" style="position: static; visibility: visible; width: 61px; height: 20px;" title="Twitter Tweet Button" src="./Building a really simple Chrome extension_files/tweet_button.06c6ee58c3810956b7509218508c7b56.en-gb.html"></iframe>
+            <script>
+                ! function(d, s, id) {
+                    var js, fjs = d.getElementsByTagName(s)[0],
+                        p = /^http:/.test(d.location) ? 'http' : 'https';
+                    if (!d.getElementById(id)) {
+                        js = d.createElement(s);
+                        js.id = id;
+                        js.src = p + '://platform.twitter.com/widgets.js';
+                        fjs.parentNode.insertBefore(js, fjs);
+                    }
+                }(document, 'script', 'twitter-wjs');
+
+            </script>
+            
+
+
+            <!-- share to google+ code -->
+
+            <div id="___plusone_0" style="position: absolute; width: 450px; left: -10000px;"><iframe ng-non-bindable="" frameborder="0" hspace="0" marginheight="0" marginwidth="0" scrolling="no" style="position:absolute;top:-10000px;width:450px;margin:0px;border-style:none" tabindex="0" vspace="0" width="100%" id="I0_1627513470982" name="I0_1627513470982" src="./Building a really simple Chrome extension_files/fastbutton.html" data-gapiattached="true"></iframe></div><div class="g-plusone" data-size="medium" data-gapiscan="true" data-onload="true" data-gapistub="true"></div>
+            <script type="text/javascript">
+                (function() {
+                    var po = document.createElement('script');
+                    po.type = 'text/javascript';
+                    po.async = true;
+                    po.src = 'https://apis.google.com/js/plusone.js';
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(po, s);
+                })();
+
+            </script>
+
+            <!-- Facebook button code (relies on eariler sdk js) -->
+            <div class="fb-like fb_iframe_widget" data-width="450" data-layout="button_count" data-show-faces="true" data-send="false" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=299378450105936&amp;container_width=800&amp;href=https%3A%2F%2Fwww.tomforth.co.uk%2Fchromeextension%2F&amp;layout=button_count&amp;locale=en_GB&amp;sdk=joey&amp;send=false&amp;show_faces=true&amp;width=450"><span style="vertical-align: bottom; width: 90px; height: 20px;"><iframe name="f22bdcb1bf92c34" width="450px" height="1000px" data-testid="fb:like Facebook Social Plugin" title="fb:like Facebook Social Plugin" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" allow="encrypted-media" src="./Building a really simple Chrome extension_files/like.html" style="border: none; visibility: visible; width: 90px; height: 20px;" class=""></iframe></span></div>
+        </div>
+
+        <div class="googleInlineAd">
+            <script type="text/javascript">
+                <!--
+                google_ad_client = "ca-pub-9119443868853829";
+                /* MobileBanner */
+                google_ad_slot = "8642635617";
+                google_ad_width = 320;
+                google_ad_height = 50;
+                //-->
+
+            </script>
+            <script type="text/javascript" src="./Building a really simple Chrome extension_files/f.txt">
+
+
+            </script>
+        </div>
+
+        <div id="disqus_recommendations" style="margin-bottom: 12px;"><iframe id="dsq-app7312" name="dsq-app7312" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Building a really simple Chrome extension_files/saved_resource.html" style="width: 100% !important; border: none !important; overflow: hidden !important; height: 0px !important; display: inline !important; box-sizing: border-box !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div><div id="disqus_thread" class="disqus"><iframe id="dsq-app9730" name="dsq-app9730" allowtransparency="true" frameborder="0" scrolling="no" tabindex="0" title="Disqus" width="100%" src="./Building a really simple Chrome extension_files/saved_resource(1).html" style="width: 1px !important; min-width: 100% !important; border: none !important; overflow: hidden !important; height: 1951px !important;" horizontalscrolling="no" verticalscrolling="no"></iframe></div>
+    </div>
+    <footer>
+    <span>twitter/ <a href="https://twitter.com/thomasforth" rel="me">@thomasforth</a></span>
+    <span>email/ <a href="mailto:thomas.forth@gmail.com" rel="me">thomas.forth@gmail.com</a></span>
+</footer>
+</div>
+
+
+
+<iframe scrolling="no" frameborder="0" allowtransparency="true" src="./Building a really simple Chrome extension_files/widget_iframe.06c6ee58c3810956b7509218508c7b56.html" title="Twitter settings iframe" style="display: none;"></iframe><iframe style="display: none;" src="./Building a really simple Chrome extension_files/saved_resource(2).html"></iframe><iframe name="oauth2relay260419256" id="oauth2relay260419256" src="./Building a really simple Chrome extension_files/postmessageRelay.html" tabindex="-1" aria-hidden="true" style="width: 1px; height: 1px; position: absolute; top: -100px;"></iframe><iframe style="display: none;" src="./Building a really simple Chrome extension_files/saved_resource(3).html"></iframe><iframe id="rufous-sandbox" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen="true" style="position: absolute; visibility: hidden; display: none; width: 0px; height: 0px; padding: 0px; border: none;" title="Twitter analytics iframe" src="./Building a really simple Chrome extension_files/saved_resource(4).html"></iframe></body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>

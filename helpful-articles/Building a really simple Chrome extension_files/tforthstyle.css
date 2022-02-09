@@ -1,0 +1,340 @@
+body {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    font-weight: 400;
+    text-align: left;
+    max-width: 1000px;
+    margin: 0px auto 0px auto;
+    background-color: #2e2e2e;
+}
+
+h1 {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    letter-spacing: 0.04em;
+    font-size: 1.5em;
+    vertical-align: middle;
+    text-align: center;
+    margin-bottom: 1.3em;
+}
+
+h2 {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    letter-spacing: 0.04em;
+    font-size: 1.4em;
+    vertical-align: middle;
+    text-align: center;
+    margin-bottom: 1.3em;
+}
+
+.date {
+    color: #111111;
+    font-size: smaller;
+    text-align: right;
+    font-style: italic;
+    margin: auto;
+}
+
+#headerheader {
+    height: auto;
+    width: 100%;
+}
+
+figure {
+    text-align: center;
+}
+
+figurecaption,
+figcaption {
+    color: charcoal;
+    font-size: small;
+    font-style: italic;
+    margin: auto;
+}
+
+.headeradimage {
+    border-radius: 4px;
+    border: 3px solid white;
+    display: inline-block;
+    margin: auto;
+    height: auto;
+    max-width: 90%;
+    max-height: 90px;
+}
+
+header h1 {
+    text-align: center;
+    background-image: url(../Malham_Tom.jpg);
+    background-size: cover;
+    padding-top: 20px;
+}
+
+li {
+    padding: 0.15em;
+}
+
+ul,
+ol,
+p,
+button,
+.bodyDiv {
+    margin: 15px 5px 15px 15px;
+    font-size: 0.85em;
+    line-height: 120%;
+}
+
+p {
+    font-size: 0.9em;
+}
+
+iframe,
+form {
+    text-align: center !important;
+    margin: 30px 0px 0px 0px auto !important;
+    display: block;
+}
+
+h3 {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    margin: 30px 5px 10px 5px;
+    font-weight: bold;
+    font-size: large;
+	font-display: swap;
+}
+
+h4 {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    margin: 34px 5px 10px 5px;
+    font-weight: normal;
+    font-size: large;
+	font-display: swap;
+}
+
+.bigList {
+    font-size: 0.8em;
+    padding: 4px 5px 4px 5px;
+    margin: 5px 0px 5px 0px;
+    line-height: 1.4em;
+    font-family: 'Roboto';
+    letter-spacing: -0.015em;
+    display: inline-block;
+}
+
+.linkGroup {
+    display: block;
+    color: white;
+    padding: 1px 1px 4px 1px;
+    display: none;
+}
+
+.fakeButton:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.fakeButton {
+    color: white;
+    padding: 6px !important;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    font-size: 1.2em;
+    user-select: none;
+}
+
+.bigList a {
+    text-decoration: none;
+    background-color: white;
+    padding: 3.5px;
+    line-height: 2.1em;
+    white-space: nowrap;
+}
+
+.smallList a {
+    background-color: white;
+    line-height: 2em;
+    padding: 2px;
+    white-space: nowrap;
+}
+
+.googleInlineAd {
+    display: none;
+}
+
+.googleRightAd {
+    display: none;
+    position: absolute;
+    right: 0;
+}
+
+a img {
+    border: 0;
+}
+
+.contentBackground {
+    background-color: #FFF6BE;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.blackBody {
+    background-color: #FFF6BE;
+    color: black;
+    padding-bottom: 0px;
+    font-size: medium;
+    max-width: 800px;
+    margin: auto;
+}
+
+.tableImage {
+    height: 40px;
+    width: auto;
+    vertical-align: middle;
+}
+
+img.headerImage {
+    height: auto;
+    width: 100%;
+    margin: 0 auto;
+}
+
+header {
+    background-color: #1b5790;
+    padding-bottom: 0.4em;
+}
+
+footer {
+    background-color: #1b5790;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+    padding: 1.2em;
+    letter-spacing: 0.04em;
+	font-display: swap;
+}
+
+footer span {
+    white-space: nowrap;
+    padding: 0.3em;
+}
+
+footer span a {
+    color: white;
+}
+
+.quote {
+    margin: 25px 15px 25px 15px;
+    font-weight: bold;
+    font-size: small;
+    font-style: italic;
+}
+
+.disqus {
+    margin: 15px 5px 15px 5px;
+    font-size: small;
+}
+
+.updates {
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-style: italic;
+    font-size: medium;
+    color: red;
+    margin: 2.5em auto 2.5em auto;
+	font-display: swap;
+}
+
+.centredImage {
+    margin: 0 auto;
+    text-align: center;
+    background-color: white;
+    width: 100% !important;
+}
+
+.large {
+    max-width: 660px;
+}
+
+.medium {
+    max-width: 540px;
+}
+
+.small {
+    max-width: 440px;
+}
+
+img {
+    display: block;
+}
+
+
+/* roboto-regular - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Roboto'), local('Roboto-Regular'),
+       url('../fonts/roboto-v20-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/roboto-v20-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-italic - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Roboto Italic'), local('Roboto-Italic'),
+       url('../fonts/roboto-v20-latin-italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/roboto-v20-latin-italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-500 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: local('Roboto Medium'), local('Roboto-Medium'),
+       url('../fonts/roboto-v20-latin-500.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/roboto-v20-latin-500.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-500italic - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 500;
+  font-display: swap;
+  src: local('Roboto Medium Italic'), local('Roboto-MediumItalic'),
+       url('../fonts/roboto-v20-latin-500italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/roboto-v20-latin-500italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Roboto Bold'), local('Roboto-Bold'),
+       url('../fonts/roboto-v20-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/roboto-v20-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-700italic - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: italic;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Roboto Bold Italic'), local('Roboto-BoldItalic'),
+       url('../fonts/roboto-v20-latin-700italic.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/roboto-v20-latin-700italic.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* roboto-900 - latin */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: local('Roboto Black'), local('Roboto-Black'),
+       url('../fonts/roboto-v20-latin-900.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+       url('../fonts/roboto-v20-latin-900.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+

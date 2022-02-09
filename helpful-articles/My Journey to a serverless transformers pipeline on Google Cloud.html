@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<!-- saved from url=(0069)https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds -->
+<html class=""><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<meta name="description" content="We’re on a journey to advance and democratize artificial intelligence through open source and open science.">
+		<meta property="fb:app_id" content="1321688464574422">
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:site" content="@huggingface">
+		<meta property="og:title" content="My Journey to a serverless transformers pipeline on Google Cloud">
+		<meta property="og:type" content="website">
+		<meta property="og:url" content="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds">
+		<meta property="og:image" content="https://huggingface.co/blog/assets/14_how_to_deploy_a_pipeline_to_google_clouds/thumbnail.png">
+
+		<link rel="stylesheet" href="./My Journey to a serverless transformers pipeline on Google Cloud_files/style.0b7a5fa8.css">
+
+		<link rel="preconnect" href="https://fonts.gstatic.com/">
+		<link href="./My Journey to a serverless transformers pipeline on Google Cloud_files/css2" rel="stylesheet">
+		<link href="./My Journey to a serverless transformers pipeline on Google Cloud_files/css2(1)" rel="stylesheet">
+		<link rel="stylesheet" href="./My Journey to a serverless transformers pipeline on Google Cloud_files/katex.min.css">
+
+		 
+
+		<title>My Journey to a serverless transformers pipeline on Google Cloud</title>
+	<script src="./My Journey to a serverless transformers pipeline on Google Cloud_files/v3"></script></head>
+	<body class="flex flex-col min-h-screen bg-white dark:bg-gray-950 text-black BlogPage" data-new-gr-c-s-check-loaded="14.1021.0" data-gr-ext-installed="">
+		<div class="flex flex-col min-h-screen "><header class="border-b border-gray-100 z-10"><div class="w-full px-4 lg:px-6 xl:container flex items-center h-16"><div class="flex flex-1 items-center"><a class="flex flex-none items-center mr-5 lg:mr-6" href="https://huggingface.co/"><img alt="Hugging Face&#39;s logo" class="md:mr-2 w-7" src="./My Journey to a serverless transformers pipeline on Google Cloud_files/huggingface_logo.svg">
+				<span class="hidden text-lg font-bold whitespace-nowrap md:block">Hugging Face</span></a>
+			<div class="v2-quick-search relative flex-1 lg:max-w-sm mr-2 sm:mr-4 lg:mr-6" data-url="/api/quicksearch-html" search-type="all" with-links="true"><input autocomplete="off" class="v2-quick-search-input w-full dark:bg-gray-950 form-input-alt h-9 pl-8 pr-3 focus:shadow-xl" name="" placeholder="Search models, datasets, users..." spellcheck="false" type="text" role="combobox" aria-controls="combobox-2822" aria-expanded="true" aria-autocomplete="list" aria-haspopup="listbox">
+	<svg class="absolute left-2.5 top-2.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M30 28.59L22.45 21A11 11 0 1 0 21 22.45L28.59 30zM5 14a9 9 0 1 1 9 9a9 9 0 0 1-9-9z" fill="currentColor"></path></svg>
+	<ul class="v2-quick-search-results z-40 hidden absolute w-full overflow-hidden text-sm bg-white border border-gray-100 rounded-lg shadow-lg divide-y divide-gray-100 dark:divide-gray-900" role="listbox" id="combobox-2822"></ul></div>
+			<button id="v2-phone-nav-button" class="lg:hidden relative flex-none place-self-stretch flex items-center justify-center w-8" type="button"><svg class="v2-phone-nav-icon-open" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="22" height="22" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32" fill="currentColor"><path d="M4 24h24v2H4z"></path><path d="M4 12h24v2H4z"></path><path d="M4 18h24v2H4z"></path><path d="M4 6h24v2H4z"></path></svg>
+				<svg class="v2-phone-nav-icon-close hidden" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1.1em" height="1.1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M24 9.4L22.6 8L16 14.6L9.4 8L8 9.4l6.6 6.6L8 22.6L9.4 24l6.6-6.6l6.6 6.6l1.4-1.4l-6.6-6.6L24 9.4z" fill="currentColor"></path></svg></button></div>
+		<nav aria-label="Main" class="ml-auto hidden lg:block"><ul class="flex items-center space-x-2"><li><a class="flex items-center group px-2 py-0.5 hover:text-indigo-700 dark:hover:text-gray-400" href="https://huggingface.co/models"><svg class="mr-1.5 text-gray-400 group-hover:text-indigo-500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path class="uim-quaternary" d="M20.23 7.24L12 12L3.77 7.24a1.98 1.98 0 0 1 .7-.71L11 2.76c.62-.35 1.38-.35 2 0l6.53 3.77c.29.173.531.418.7.71z" opacity=".25" fill="currentColor"></path><path class="uim-tertiary" d="M12 12v9.5a2.09 2.09 0 0 1-.91-.21L4.5 17.48a2.003 2.003 0 0 1-1-1.73v-7.5a2.06 2.06 0 0 1 .27-1.01L12 12z" opacity=".5" fill="currentColor"></path><path class="uim-primary" d="M20.5 8.25v7.5a2.003 2.003 0 0 1-1 1.73l-6.62 3.82c-.275.13-.576.198-.88.2V12l8.23-4.76c.175.308.268.656.27 1.01z" fill="currentColor"></path></svg>
+				Models
+			</a></li>
+		<li><a class="flex items-center group px-2 py-0.5 hover:text-red-700 dark:hover:text-gray-400" href="https://huggingface.co/datasets"><svg class="mr-1.5 text-gray-400 group-hover:text-red-500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 25 25"><ellipse cx="12.5" cy="5" fill="currentColor" fill-opacity="0.25" rx="7.5" ry="2"></ellipse><path d="M12.5 15C16.6421 15 20 14.1046 20 13V20C20 21.1046 16.6421 22 12.5 22C8.35786 22 5 21.1046 5 20V13C5 14.1046 8.35786 15 12.5 15Z" fill="currentColor" opacity="0.5"></path><path d="M12.5 7C16.6421 7 20 6.10457 20 5V11.5C20 12.6046 16.6421 13.5 12.5 13.5C8.35786 13.5 5 12.6046 5 11.5V5C5 6.10457 8.35786 7 12.5 7Z" fill="currentColor" opacity="0.5"></path><path d="M5.23628 12C5.08204 12.1598 5 12.8273 5 13C5 14.1046 8.35786 15 12.5 15C16.6421 15 20 14.1046 20 13C20 12.8273 19.918 12.1598 19.7637 12C18.9311 12.8626 15.9947 13.5 12.5 13.5C9.0053 13.5 6.06886 12.8626 5.23628 12Z" fill="currentColor"></path></svg>
+				Datasets
+			</a></li>
+		<li class="b-r"><div class="relative  v2-dropdown">
+	<button class="cursor-pointer w-full 
+			px-2 py-0.5 hover:text-gray-500 dark:hover:text-gray-400 flex items-center 
+			
+			v2-dropdown-button" type="button">
+		<svg class="mr-1.5 text-gray-400 w-3" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" viewBox="0 0 11 8" preserveAspectRatio="xMidYMid meet" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M11 1.5H0V0.5H11V1.5ZM11 7.5H0V6.5H11V7.5ZM0 4.5H11V3.5H0V4.5Z"></path></svg>
+			Resources
+			</button>
+	
+	
+	<div class="absolute mt-1 min-w-full w-auto bg-white rounded-xl overflow-hidden shadow-lg z-10 border border-gray-100 -right-1 top-full 
+			
+			v2-dropdown-menu hidden"><ul class="min-w-full w-52">
+					<li><div class="col-span-full px-4 py-0.5 flex items-center justify-between font-semibold bg-gradient-to-r to-white dark:to-gray-925 whitespace-nowrap text-blue-800 from-blue-50 dark:text-blue-100 dark:from-blue-900">Website
+						</div>
+						<ul><li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/metrics">
+		<svg class="mr-1.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path class="uim-quaternary" d="M6 23H2a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1z" opacity=".25" fill="currentColor"></path><path class="uim-primary" d="M14 23h-4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v20a1 1 0 0 1-1 1z" fill="currentColor"></path><path class="uim-tertiary" d="M22 23h-4a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1z" opacity=".5" fill="currentColor"></path></svg>
+			Metrics</a></li>
+
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/languages">
+		<svg class="mr-1.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path class="uim-primary" d="M17 13H7a1 1 0 0 1 0-2h10a1 1 0 0 1 0 2z" fill="currentColor"></path><path class="uim-tertiary" d="M12 2a10 10 0 0 0-7.743 16.33l-1.964 1.963A1 1 0 0 0 3 22h9a10 10 0 0 0 0-20zM9 7h6a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2zm6 10H9a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2zm2-4H7a1 1 0 0 1 0-2h10a1 1 0 0 1 0 2z" opacity=".5" fill="currentColor"></path><path class="uim-primary" d="M15 17H9a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2zm0-8H9a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2z" fill="currentColor"></path></svg>
+			Languages</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/organizations">
+		<svg class="mr-1.5 text-gray-400" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path class="uim-tertiary" d="M12 18a3.5 3.5 0 1 1 3.5-3.5A3.504 3.504 0 0 1 12 18z" opacity=".5" fill="currentColor"></path><path class="uim-primary" d="M14.64 16.772a3.452 3.452 0 0 1-5.28 0A4.988 4.988 0 0 0 7 21a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1a4.988 4.988 0 0 0-2.36-4.228z" fill="currentColor"></path><path class="uim-tertiary" d="M21 12a.996.996 0 0 1-.664-.252L12 4.338l-8.336 7.41a1 1 0 0 1-1.328-1.496l9-8a.999.999 0 0 1 1.328 0l9 8A1 1 0 0 1 21 12z" opacity=".5" fill="currentColor"></path><path class="uim-quaternary" d="M12 4.338l-8 7.111V21a1 1 0 0 0 1 1h3a1 1 0 0 1-1-1a4.988 4.988 0 0 1 2.36-4.228A3.469 3.469 0 0 1 8.5 14.5a3.5 3.5 0 0 1 7 0a3.469 3.469 0 0 1-.86 2.272A4.988 4.988 0 0 1 17 21a1 1 0 0 1-1 1h3a1 1 0 0 0 1-1v-9.551z" opacity=".25" fill="currentColor"></path></svg>
+			Organizations</a></li></ul></li>
+					<li><div class="col-span-full px-4 py-0.5 flex items-center justify-between font-semibold bg-gradient-to-r to-white dark:to-gray-925 whitespace-nowrap text-yellow-800 from-yellow-50 dark:text-yellow-100 dark:from-yellow-900">Community
+						</div>
+						<ul><li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://discuss.huggingface.co/" target="_blank">
+		
+			Forum</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/blog">
+		
+			Blog</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://github.com/huggingface" target="_blank">
+		
+			GitHub</a></li></ul></li>
+					<li><div class="col-span-full px-4 py-0.5 flex items-center justify-between font-semibold bg-gradient-to-r to-white dark:to-gray-925 whitespace-nowrap text-green-800 from-green-50 dark:text-green-100 dark:from-green-900">Documentation
+						</div>
+						<ul><li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/docs">
+		
+			Doc Search</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/docs/hub">
+		
+			Model Hub doc</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/docs/accelerate/">
+		
+			Accelerate doc</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/docs/autonlp/">
+		
+			AutoNLP doc</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/docs/datasets/">
+		
+			Datasets doc</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://api-inference.huggingface.co/docs/" target="_blank">
+		
+			Inference API doc</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/docs/sagemaker">
+		
+			SageMaker doc</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/docs/tokenizers/python/latest/">
+		
+			Tokenizers doc</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/transformers/">
+		
+			Transformers doc</a></li></ul></li>
+				</ul></div>
+	</div></li>
+
+		<li><div class="relative  v2-dropdown">
+	<button class="cursor-pointer w-full 
+			px-2 py-0.5 group hover:text-green-700 dark:hover:text-gray-400 flex items-center 
+			
+			v2-dropdown-button" type="button">
+		<svg class="mr-1.5 text-gray-400 group-hover:text-green-500" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path class="uim-tertiary" d="M19 6H5a3 3 0 0 0-3 3v2.72L8.837 14h6.326L22 11.72V9a3 3 0 0 0-3-3z" opacity=".5" fill="currentColor"></path><path class="uim-primary" d="M10 6V5h4v1h2V5a2.002 2.002 0 0 0-2-2h-4a2.002 2.002 0 0 0-2 2v1h2zm-1.163 8L2 11.72V18a3.003 3.003 0 0 0 3 3h14a3.003 3.003 0 0 0 3-3v-6.28L15.163 14H8.837z" fill="currentColor"></path></svg>
+			Solutions
+			</button>
+	
+	
+	<div class="absolute mt-1 min-w-full w-auto bg-white rounded-xl overflow-hidden shadow-lg z-10 border border-gray-100 -right-1 top-full 
+			
+			v2-dropdown-menu hidden"><ul class="min-w-full w-52">
+					<li><ul><li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/support">
+		
+			Premium Support</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/inference-api">
+		
+			Inference API</a></li>
+							<li><a class="flex items-center hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer px-3 py-1.5 whitespace-nowrap 
+			
+			hover:underline
+			v2-dropdown-entry" href="https://huggingface.co/autonlp">
+		
+			AutoNLP</a></li></ul></li>
+				</ul></div>
+	</div></li>
+
+		<li><a class="flex items-center group px-2 py-0.5 hover:text-gray-500 dark:hover:text-gray-400" href="https://huggingface.co/pricing" data-ga-category="header-menu" data-ga-action="pricing">Pricing
+			</a></li>
+		<li><hr class="mx-2 w-0.5 h-5 border-none bg-gray-100 dark:bg-gray-800"></li>
+		<li><a class="px-2 py-0.5 block cursor-pointer hover:text-gray-500 dark:hover:text-gray-400" href="https://huggingface.co/login">Log In
+				</a></li>
+			<li><a class="ml-2 btn" href="https://huggingface.co/join">Sign Up </a></li></ul></nav>
+		<div id="v2-phone-nav-menu" class="hidden lg:hidden z-20 fixed bg-white top-16 inset-0 overflow-y-auto"><nav aria-label="Main"><ul class="px-2 pb-4 space-y-4"><li class="space-y-2.5"><div class="-mx-2 flex items-center px-2 font-semibold text-purple-800 bg-gradient-to-r from-purple-50 to-white h-7 dark:text-gray-200 dark:from-purple-900 dark:via-gray-925 dark:to-gray-925">Account
+				</div>
+				<ul class="grid gap-2.5 grid-cols-2 content-start"><li><a class="btn w-full v2-dropdown-entry" href="https://huggingface.co/login">Log In </a></li>
+						<li><a class="btn w-full v2-dropdown-entry" href="https://huggingface.co/join">Sign Up </a></li></ul></li>
+			<li class="space-y-2.5"><div class="-mx-2 flex items-center px-2 font-semibold text-blue-800 bg-gradient-to-r from-blue-50 to-white h-7 dark:text-gray-200 dark:from-blue-900 dark:via-gray-925 dark:to-gray-925">Website
+				</div>
+				<ul class="grid gap-2.5 grid-cols-2 content-start"><li><a href="https://huggingface.co/models" class="btn w-full v2-dropdown-entry"><svg class="text-gray-400 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path class="uim-quaternary" d="M20.23 7.24L12 12L3.77 7.24a1.98 1.98 0 0 1 .7-.71L11 2.76c.62-.35 1.38-.35 2 0l6.53 3.77c.29.173.531.418.7.71z" opacity=".25" fill="currentColor"></path><path class="uim-tertiary" d="M12 12v9.5a2.09 2.09 0 0 1-.91-.21L4.5 17.48a2.003 2.003 0 0 1-1-1.73v-7.5a2.06 2.06 0 0 1 .27-1.01L12 12z" opacity=".5" fill="currentColor"></path><path class="uim-primary" d="M20.5 8.25v7.5a2.003 2.003 0 0 1-1 1.73l-6.62 3.82c-.275.13-.576.198-.88.2V12l8.23-4.76c.175.308.268.656.27 1.01z" fill="currentColor"></path></svg>
+							Models
+						</a></li>
+					<li><a href="https://huggingface.co/datasets" class="btn w-full v2-dropdown-entry"><svg class="text-gray-400 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 25 25"><ellipse cx="12.5" cy="5" fill="currentColor" fill-opacity="0.25" rx="7.5" ry="2"></ellipse><path d="M12.5 15C16.6421 15 20 14.1046 20 13V20C20 21.1046 16.6421 22 12.5 22C8.35786 22 5 21.1046 5 20V13C5 14.1046 8.35786 15 12.5 15Z" fill="currentColor" opacity="0.5"></path><path d="M12.5 7C16.6421 7 20 6.10457 20 5V11.5C20 12.6046 16.6421 13.5 12.5 13.5C8.35786 13.5 5 12.6046 5 11.5V5C5 6.10457 8.35786 7 12.5 7Z" fill="currentColor" opacity="0.5"></path><path d="M5.23628 12C5.08204 12.1598 5 12.8273 5 13C5 14.1046 8.35786 15 12.5 15C16.6421 15 20 14.1046 20 13C20 12.8273 19.918 12.1598 19.7637 12C18.9311 12.8626 15.9947 13.5 12.5 13.5C9.0053 13.5 6.06886 12.8626 5.23628 12Z" fill="currentColor"></path></svg>
+							Datasets
+						</a></li>
+					<li><a href="https://huggingface.co/metrics" class="btn w-full v2-dropdown-entry"><svg class="text-gray-400 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path class="uim-quaternary" d="M6 23H2a1 1 0 0 1-1-1v-8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1z" opacity=".25" fill="currentColor"></path><path class="uim-primary" d="M14 23h-4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v20a1 1 0 0 1-1 1z" fill="currentColor"></path><path class="uim-tertiary" d="M22 23h-4a1 1 0 0 1-1-1V10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1z" opacity=".5" fill="currentColor"></path></svg>
+							Metrics
+						</a></li>
+					<li><a href="https://huggingface.co/languages" class="btn w-full v2-dropdown-entry"><svg class="text-gray-400 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path class="uim-primary" d="M17 13H7a1 1 0 0 1 0-2h10a1 1 0 0 1 0 2z" fill="currentColor"></path><path class="uim-tertiary" d="M12 2a10 10 0 0 0-7.743 16.33l-1.964 1.963A1 1 0 0 0 3 22h9a10 10 0 0 0 0-20zM9 7h6a1 1 0 0 1 0 2H9a1 1 0 0 1 0-2zm6 10H9a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2zm2-4H7a1 1 0 0 1 0-2h10a1 1 0 0 1 0 2z" opacity=".5" fill="currentColor"></path><path class="uim-primary" d="M15 17H9a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2zm0-8H9a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2z" fill="currentColor"></path></svg>
+							Languages
+						</a></li>
+					<li><a href="https://huggingface.co/organizations" class="btn w-full v2-dropdown-entry"><svg class="text-gray-400 mr-1.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24"><path class="uim-tertiary" d="M12 18a3.5 3.5 0 1 1 3.5-3.5A3.504 3.504 0 0 1 12 18z" opacity=".5" fill="currentColor"></path><path class="uim-primary" d="M14.64 16.772a3.452 3.452 0 0 1-5.28 0A4.988 4.988 0 0 0 7 21a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1a4.988 4.988 0 0 0-2.36-4.228z" fill="currentColor"></path><path class="uim-tertiary" d="M21 12a.996.996 0 0 1-.664-.252L12 4.338l-8.336 7.41a1 1 0 0 1-1.328-1.496l9-8a.999.999 0 0 1 1.328 0l9 8A1 1 0 0 1 21 12z" opacity=".5" fill="currentColor"></path><path class="uim-quaternary" d="M12 4.338l-8 7.111V21a1 1 0 0 0 1 1h3a1 1 0 0 1-1-1a4.988 4.988 0 0 1 2.36-4.228A3.469 3.469 0 0 1 8.5 14.5a3.5 3.5 0 0 1 7 0a3.469 3.469 0 0 1-.86 2.272A4.988 4.988 0 0 1 17 21a1 1 0 0 1-1 1h3a1 1 0 0 0 1-1v-9.551z" opacity=".25" fill="currentColor"></path></svg>
+							Organizations
+						</a></li></ul></li>
+			<li class="space-y-2.5"><div class="-mx-2 flex items-center px-2 font-semibold text-pink-800 bg-gradient-to-r from-pink-50 to-white h-7 dark:text-gray-200 dark:from-pink-900 dark:via-gray-925 dark:to-gray-925">Solutions
+				</div>
+				<ul class="grid gap-2.5 grid-cols-2 content-start"><li><a href="https://huggingface.co/pricing" class="btn w-full v2-dropdown-entry" data-ga-category="header-menu" data-ga-action="pricing">Pricing
+						</a></li>
+					<li><a href="https://huggingface.co/support" class="btn w-full v2-dropdown-entry" data-ga-category="header-menu" data-ga-action="support">Premium Support
+						</a></li>
+					<li><a href="https://huggingface.co/inference-api" class="btn w-full v2-dropdown-entry" data-ga-category="header-menu" data-ga-action="api">Inference API
+						</a></li>
+					<li><a href="https://huggingface.co/autonlp" class="btn w-full v2-dropdown-entry" data-ga-category="header-menu" data-ga-action="autonlp">AutoNLP
+						</a></li></ul></li>
+			<li class="space-y-2.5"><div class="-mx-2 flex items-center px-2 font-semibold text-yellow-800 bg-gradient-to-r from-yellow-50 to-white h-7 dark:text-gray-200 dark:from-yellow-900 dark:via-gray-925 dark:to-gray-925">Community
+				</div>
+				<ul class="grid gap-2.5 grid-cols-2 content-start"><li><a href="https://discuss.huggingface.co/" class="btn w-full v2-dropdown-entry">Forum
+						</a></li>
+					<li><a href="https://huggingface.co/blog" class="btn w-full v2-dropdown-entry">Blog </a></li></ul></li>
+			<li class="space-y-2.5"><div class="-mx-2 flex items-center px-2 font-semibold text-green-800 bg-gradient-to-r from-green-50 to-white h-7 dark:text-gray-200 dark:from-green-900 dark:via-gray-925 dark:to-gray-925">Documentation
+				</div>
+				<ul class="grid gap-2.5 grid-cols-2 content-start"><li><a href="https://huggingface.co/docs" class="btn w-full v2-dropdown-entry">Doc Search
+						</a></li>
+					<li><a href="https://huggingface.co/docs/hub" class="btn w-full v2-dropdown-entry">Model Hub doc
+						</a></li>
+					<li><a href="https://huggingface.co/docs/accelerate/" class="btn w-full v2-dropdown-entry">Accelerate doc
+						</a></li>
+					<li><a href="https://huggingface.co/docs/autonlp/" class="btn w-full v2-dropdown-entry">AutoNLP doc
+						</a></li>
+					<li><a href="https://huggingface.co/docs/datasets/" class="btn w-full v2-dropdown-entry">Datasets doc
+						</a></li>
+					<li><a href="https://api-inference.huggingface.co/docs/" class="btn w-full v2-dropdown-entry">Inference API doc
+						</a></li>
+					<li><a href="https://huggingface.co/docs/sagemaker" class="btn w-full v2-dropdown-entry">SageMaker doc
+						</a></li>
+					<li><a href="https://huggingface.co/docs/tokenizers/python/latest/" class="btn w-full v2-dropdown-entry">Tokenizers doc
+						</a></li>
+					<li><a href="https://huggingface.co/transformers/" class="btn w-full v2-dropdown-entry">Transformers doc
+						</a></li></ul></li></ul></nav></div></div></header>
+	
+	
+	<main class="flex flex-col flex-1 "><div class="blog-content prose dark:prose-light lg:prose-lg 2xl:prose-xl max-w-3xl 2xl:max-w-4xl container mx-auto pt-16 md:pt-24 pb-16"><h1 class="relative group flex items-center">
+	<a id="my-journey-to-a-serverless-transformers-pipeline-on-google-cloud" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#my-journey-to-a-serverless-transformers-pipeline-on-google-cloud">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		My Journey to a serverless transformers pipeline on <br>Google Cloud
+	</span>
+</h1>
+<div class="blog-metadata">
+    <small>Published March 18, 2021.</small>
+    <a target="_blank" class="btn no-underline text-sm mb-5 font-sans" href="https://github.com/huggingface/blog/blob/master/how-to-deploy-a-pipeline-to-google-clouds.md">
+        Update on GitHub
+    </a>
+</div>
+
+<div class="author-card">
+    <a href="https://huggingface.co/Maxence">
+        <img class="avatar avatar-user" src="./My Journey to a serverless transformers pipeline on Google Cloud_files/1613496680893-602bfe18c4f8038e9a1e0a66.jpeg" title="Gravatar">
+        <div class="bfc">
+            <code>Maxence</code>
+            <span class="fullname">Maxence Dominici</span>
+            <span class="bg-gray-100 rounded px-1 text-gray-600 text-sm font-mono">guest</span>
+        </div>
+    </a>
+</div>
+
+<blockquote>
+<h5 class="relative group flex items-center">
+	<a id="a-guest-blog-post-by-community-member-maxence-dominici" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#a-guest-blog-post-by-community-member-maxence-dominici">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		A guest blog post by community member <a href="https://huggingface.co/Maxence">Maxence Dominici</a>
+	</span>
+</h5>
+</blockquote>
+<p>This article will discuss my journey to deploy the <code>transformers</code> <em>sentiment-analysis</em> pipeline on <a href="https://cloud.google.com/">Google Cloud</a>. We will start with a quick introduction to <code>transformers</code> and then move to the technical part of the implementation. Finally, we'll summarize this implementation and review what we have achieved.</p>
+<h2 class="relative group flex items-center">
+	<a id="the-goal" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#the-goal">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		The Goal
+	</span>
+</h2>
+<p><img src="./My Journey to a serverless transformers pipeline on Google Cloud_files/Customer_review.png" alt="img.png">
+I wanted to create a micro-service that automatically detects whether a customer review left in Discord is positive or negative. This would allow me to treat the comment accordingly and improve the customer experience. For instance, if the review was negative, I could create a feature which would contact the customer, apologize for the poor quality of service, and inform him/her that our support team will contact him/her as soon as possible to assist him and hopefully fix the problem. Since I don't plan to get more than 2,000 requests per month, I didn't impose any performance constraints regarding the time and the scalability.</p>
+<h2 class="relative group flex items-center">
+	<a id="the-transformers-library" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#the-transformers-library">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		The Transformers library
+	</span>
+</h2>
+<p>I was a bit confused at the beginning when I downloaded the .h5 file. I thought it would be compatible with <code>tensorflow.keras.models.load_model</code>, but this wasn't the case. After a few minutes of research I was able to figure out that the file was a weights checkpoint rather than a Keras model.
+After that, I tried out the API that Hugging Face offers and read a bit more about the pipeline feature they offer. Since the results of the API &amp; the pipeline were great, I decided that I could serve the model through the pipeline on my own server.</p>
+<p>Below is the <a href="https://github.com/huggingface/transformers#quick-tour">official example</a> from the Transformers GitHub page.</p>
+<pre><code class="language-python"><span class="hljs-keyword">from</span> transformers <span class="hljs-keyword">import</span> pipeline
+
+<span class="hljs-comment"># Allocate a pipeline for sentiment-analysis</span>
+classifier = pipeline(<span class="hljs-string">'sentiment-analysis'</span>)
+classifier(<span class="hljs-string">'We are very happy to include pipeline into the transformers repository.'</span>)
+[{<span class="hljs-string">'label'</span>: <span class="hljs-string">'POSITIVE'</span>, <span class="hljs-string">'score'</span>: <span class="hljs-number">0.9978193640708923</span>}]</code></pre>
+<h2 class="relative group flex items-center">
+	<a id="deploy-transformers-to-google-cloud" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#deploy-transformers-to-google-cloud">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		Deploy transformers to Google Cloud
+	</span>
+</h2>
+<blockquote>
+<p>GCP is chosen as it is the cloud environment I am using in my personal organization.</p>
+</blockquote>
+<h3 class="relative group flex items-center">
+	<a id="step-1---research" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#step-1---research">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		Step 1 - Research
+	</span>
+</h3>
+<p>I already knew that I could use an API-Service like <code>flask</code> to serve a <code>transformers</code> model. I searched in the Google Cloud AI documentation and found a service to host Tensorflow models named <a href="https://cloud.google.com/ai-platform/prediction/docs">AI-Platform Prediction</a>. I also found <a href="https://cloud.google.com/appengine">App Engine</a> and <a href="https://cloud.google.com/run">Cloud Run</a> there, but I was concerned about the memory usage for App Engine and was not very familiar with Docker.</p>
+<h3 class="relative group flex items-center">
+	<a id="step-2---test-on-ai-platform-prediction" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#step-2---test-on-ai-platform-prediction">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		Step 2 - Test on AI-Platform Prediction
+	</span>
+</h3>
+<p>As the model is not a "pure TensorFlow" saved model but a checkpoint, and I couldn't turn it into a "pure TensorFlow model", I figured out that the example on <a href="https://cloud.google.com/ai-platform/prediction/docs/deploying-models">this page</a> wouldn't work.
+From there I saw that I could write some custom code, allowing me to load the <code>pipeline</code> instead of having to handle the model, which seemed is easier. I also learned that I could define a pre-prediction &amp; post-prediction action, which could be useful in the future for pre- or post-processing the data for customers' needs.
+I followed Google's guide but encountered an issue as the service is still in beta and everything is not stable. This issue is detailed <a href="https://github.com/huggingface/transformers/issues/9926">here</a>.</p>
+<h3 class="relative group flex items-center">
+	<a id="step-3---test-on-app-engine" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#step-3---test-on-app-engine">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		Step 3 - Test on App Engine
+	</span>
+</h3>
+<p>I moved to Google's <a href="https://cloud.google.com/appengine">App Engine</a> as it's a service that I am familiar with, but encountered an installation issue with TensorFlow due to a missing system dependency file. I then tried with PyTorch which worked with an F4_1G instance, but it couldn't handle more than 2 requests on the same instance, which isn't really great performance-wise.</p>
+<h3 class="relative group flex items-center">
+	<a id="step-4---test-on-cloud-run" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#step-4---test-on-cloud-run">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		Step 4 - Test on Cloud Run
+	</span>
+</h3>
+<p>Lastly, I moved to <a href="https://cloud.google.com/run">Cloud Run</a> with a docker image. I followed <a href="https://cloud.google.com/run/docs/quickstarts/build-and-deploy#python">this guide</a> to get an idea of how it works. In Cloud Run, I could configure a higher memory and more vCPUs to perform the prediction with PyTorch. I ditched Tensorflow as PyTorch seems to load the model faster.</p>
+<h2 class="relative group flex items-center">
+	<a id="implementation-of-the-serverless-pipeline" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#implementation-of-the-serverless-pipeline">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		Implementation of the serverless pipeline
+	</span>
+</h2>
+<p>The final solution consists of four different components: </p>
+<ul>
+<li><code>main.py</code> handling the request to the pipeline</li>
+<li><code>Dockerfile</code> used to create the image that will be deployed on Cloud Run.</li>
+<li>Model folder having the <code>pytorch_model.bin</code>, <code>config.json</code> and <code>vocab.txt</code>.<ul>
+<li>Model : <a href="https://huggingface.co/distilbert-base-uncased-finetuned-sst-2-english">DistilBERT base uncased finetuned SST-2
+</a></li>
+<li>To download the model folder, follow the instructions in the button. <img src="./My Journey to a serverless transformers pipeline on Google Cloud_files/Download_instructions_button.png" alt="img.png"></li>
+<li>You don't need to keep the <code>rust_model.ot</code> or the <code>tf_model.h5</code> as we will use <a href="https://pytorch.org/">PyTorch</a>.</li>
+</ul>
+</li>
+<li><code>requirement.txt</code> for installing the dependencies</li>
+</ul>
+<p>The content on the <code>main.py</code> is really simple. The idea is to receive a <code>GET</code> request containing two fields. First the review that needs to be analysed, second the API key to "protect" the service. The second parameter is optional, I used it to avoid setting up the oAuth2 of Cloud Run. After these arguments are provided, we load the pipeline which is built based on the model <code>distilbert-base-uncased-finetuned-sst-2-english</code> (provided above). In the end, the best match is returned to the client.</p>
+<pre><code class="language-python"><span class="hljs-keyword">import</span> os
+<span class="hljs-keyword">from</span> flask <span class="hljs-keyword">import</span> Flask, jsonify, request
+<span class="hljs-keyword">from</span> transformers <span class="hljs-keyword">import</span> pipeline
+
+app = Flask(__name__)
+
+model_path = <span class="hljs-string">"./model"</span>
+
+<span class="hljs-meta">@app.route('/')</span>
+<span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">classify_review</span>():</span>
+    review = request.args.get(<span class="hljs-string">'review'</span>)
+    api_key = request.args.get(<span class="hljs-string">'api_key'</span>)
+    <span class="hljs-keyword">if</span> review <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span> <span class="hljs-keyword">or</span> api_key != <span class="hljs-string">"MyCustomerApiKey"</span>:
+        <span class="hljs-keyword">return</span> jsonify(code=<span class="hljs-number">403</span>, message=<span class="hljs-string">"bad request"</span>)
+    classify = pipeline(<span class="hljs-string">"sentiment-analysis"</span>, model=model_path, tokenizer=model_path)
+    <span class="hljs-keyword">return</span> classify(<span class="hljs-string">"that was great"</span>)[<span class="hljs-number">0</span>]
+
+
+<span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">'__main__'</span>:
+    <span class="hljs-comment"># This is used when running locally only. When deploying to Google Cloud</span>
+    <span class="hljs-comment"># Run, a webserver process such as Gunicorn will serve the app.</span>
+    app.run(debug=<span class="hljs-literal">False</span>, host=<span class="hljs-string">"0.0.0.0"</span>, port=<span class="hljs-built_in">int</span>(os.environ.get(<span class="hljs-string">"PORT"</span>, <span class="hljs-number">8080</span>)))</code></pre>
+<p>Then the <code>DockerFile</code> which will be used to create a docker image of the service. We specify that our service runs with python:3.7, plus that we need to install our requirements. Then we use <code>gunicorn</code> to handle our process on the port <code>5000</code>.</p>
+<pre><code class="language-dockerfile"><span class="hljs-comment"># Use Python37</span>
+<span class="hljs-keyword">FROM</span> python:<span class="hljs-number">3.7</span>
+<span class="hljs-comment"># Allow statements and log messages to immediately appear in the Knative logs</span>
+<span class="hljs-keyword">ENV</span> PYTHONUNBUFFERED True
+<span class="hljs-comment"># Copy requirements.txt to the docker image and install packages</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> requirements.txt /</span>
+<span class="hljs-keyword">RUN</span><span class="bash"> pip install -r requirements.txt</span>
+<span class="hljs-comment"># Set the WORKDIR to be the folder</span>
+<span class="hljs-keyword">COPY</span><span class="bash"> . /app</span>
+<span class="hljs-comment"># Expose port 5000</span>
+<span class="hljs-keyword">EXPOSE</span> <span class="hljs-number">5000</span>
+<span class="hljs-keyword">ENV</span> PORT <span class="hljs-number">5000</span>
+<span class="hljs-keyword">WORKDIR</span><span class="bash"> /app</span>
+<span class="hljs-comment"># Use gunicorn as the entrypoint</span>
+<span class="hljs-keyword">CMD</span><span class="bash"> <span class="hljs-built_in">exec</span> gunicorn --<span class="hljs-built_in">bind</span> :<span class="hljs-variable">$PORT</span> main:app --workers 1 --threads 1 --timeout 0</span></code></pre>
+<p>It is important to note the arguments <code>--workers 1 --threads 1</code> which means that I want to execute my app on only one worker (= 1 process) with a single thread. This is because I don't want to have 2 instances up at once because it might increase the billing. One of the downsides is that it will take more time to process if the service receives two requests at once. After that, I put the limit to one thread due to the memory usage needed for loading the model into the pipeline. If I were using 4 threads, I might have 4 Gb / 4 = 1 Gb only to perform the full process, which is not enough and would lead to a memory error.</p>
+<p>Finally, the <code>requirement.txt</code> file</p>
+<pre><code class="language-python">Flask==<span class="hljs-number">1.1</span><span class="hljs-number">.2</span>
+torch===<span class="hljs-number">1.7</span><span class="hljs-number">.1</span>
+transformers~=<span class="hljs-number">4.2</span><span class="hljs-number">.0</span>
+gunicorn&gt;=<span class="hljs-number">20.0</span><span class="hljs-number">.0</span></code></pre>
+<h2 class="relative group flex items-center">
+	<a id="deployment-instructions" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#deployment-instructions">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		Deployment instructions
+	</span>
+</h2>
+<p>First, you will need to meet some requirements such as having a project on Google Cloud, enabling the billing and installing the <code>gcloud</code> cli. You can find more details about it in the <a href="https://cloud.google.com/run/docs/quickstarts/build-and-deploy#before-you-begin">Google's guide - Before you begin</a>, </p>
+<p>Second, we need to build the docker image and deploy it to cloud run by selecting the correct project (replace <code>PROJECT-ID</code>) and set the name of the instance such as <code>ai-customer-review</code>. You can find more information about the deployment on <a href="https://cloud.google.com/run/docs/quickstarts/build-and-deploy#deploying_to">Google's guide - Deploying to</a>.</p>
+<pre><code class="language-shell">gcloud builds submit --tag gcr.io/PROJECT-ID/ai-customer-review
+gcloud run deploy --image gcr.io/PROJECT-ID/ai-customer-review --platform managed</code></pre>
+<p>After a few minutes, you will also need to upgrade the memory allocated to your Cloud Run instance from 256 MB to 4 Gb. To do so, head over to the <a href="https://console.cloud.google.com/run">Cloud Run Console</a> of your project.</p>
+<p>There you should find your instance, click on it.</p>
+<p><img src="./My Journey to a serverless transformers pipeline on Google Cloud_files/Cloud_run_instance.png" alt="img.png"></p>
+<p>After that you will have a blue button labelled "edit and deploy new revision" on top of the screen, click on it and you'll be prompt many configuration fields. At the bottom you should find a "Capacity" section where you can specify the memory.</p>
+<p><img src="./My Journey to a serverless transformers pipeline on Google Cloud_files/Edit_memory.png" alt="img.png"></p>
+<h2 class="relative group flex items-center">
+	<a id="performances" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#performances">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		Performances
+	</span>
+</h2>
+<p><img src="./My Journey to a serverless transformers pipeline on Google Cloud_files/Request_Result.png" alt="img.png"></p>
+<p>Handling a request takes less than five seconds from the moment you send the request including loading the model into the pipeline, and prediction. The cold start might take up an additional 10 seconds more or less.</p>
+<p>We can improve the request handling performance by warming the model, it means loading it on start-up instead on each request (global variable for example), by doing so, we win time and memory usage.</p>
+<h2 class="relative group flex items-center">
+	<a id="costs" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#costs">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		Costs
+	</span>
+</h2>
+<p>I simulated the cost based on the Cloud Run instance configuration with <a href="https://cloud.google.com/products/calculator#id=cd314cba-1d9a-4bc6-a7c0-740bbf6c8a78">Google pricing simulator</a>
+<img src="./My Journey to a serverless transformers pipeline on Google Cloud_files/Estimate_of_the_monthly_cost.png" alt="Estimate of the monthly cost"></p>
+<p>For my micro-service, I am planning to near 1,000 requests per month, optimistically. 500 may more likely for my usage. That's why I considered 2,000 requests as an upper bound when designing my microservice.
+Due to that low number of requests, I didn't bother so much regarding the scalability but might come back into it if my billing increases.</p>
+<p>Nevertheless, it's important to stress that you will pay the storage for each Gigabyte of your build image. It's roughly €0.10 per Gb per month, which is fine if you don't keep all your versions on the cloud since my version is slightly above 1 Gb (Pytorch for 700 Mb &amp; the model for 250 Mb).</p>
+<h2 class="relative group flex items-center">
+	<a id="conclusion" class="block pr-1.5 text-lg with-hover:absolute with-hover:p-1.5 with-hover:opacity-0 with-hover:group-hover:opacity-100 with-hover:right-full" href="https://huggingface.co/blog/how-to-deploy-a-pipeline-to-google-clouds#conclusion">
+		<span class="header-link"><svg class="text-gray-500 hover:text-black w-4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 32 32"><path d="M29.25 6.76a6 6 0 0 0-8.5 0l1.42 1.42a4 4 0 1 1 5.67 5.67l-8 8a4 4 0 1 1-5.67-5.66l1.41-1.42l-1.41-1.42l-1.42 1.42a6 6 0 0 0 0 8.5A6 6 0 0 0 17 25a6 6 0 0 0 4.27-1.76l8-8a6 6 0 0 0-.02-8.48z" fill="currentColor"></path><path d="M4.19 24.82a4 4 0 0 1 0-5.67l8-8a4 4 0 0 1 5.67 0A3.94 3.94 0 0 1 19 14a4 4 0 0 1-1.17 2.85L15.71 19l1.42 1.42l2.12-2.12a6 6 0 0 0-8.51-8.51l-8 8a6 6 0 0 0 0 8.51A6 6 0 0 0 7 28a6.07 6.07 0 0 0 4.28-1.76l-1.42-1.42a4 4 0 0 1-5.67 0z" fill="currentColor"></path></svg></span>
+	</a>
+	<span>
+		Conclusion
+	</span>
+</h2>
+<p>By using Transformers' sentiment analysis pipeline, I saved a non-negligible amount of time. Instead of training/fine-tuning a model, I could find one ready to be used in production and start the deployment in my system. I might fine-tune it in the future, but as shown on my test, the accuracy is already amazing!
+I would have liked a "pure TensorFlow" model, or at least a way to load it in TensorFlow without Transformers dependencies to use the AI platform. It would also be great to have a lite version.</p>
+</div></main></div>
+
+		<script async="" src="./My Journey to a serverless transformers pipeline on Google Cloud_files/uwt.js"></script><script type="text/javascript" async="" src="./My Journey to a serverless transformers pipeline on Google Cloud_files/insight.min.js"></script><script async="" src="./My Journey to a serverless transformers pipeline on Google Cloud_files/analytics.js"></script><script>
+			import("/front/build/module/index.0b7a5fa8.js");
+			window.supportsDynamicImport = true;
+		</script>
+		<script>
+			if (!window.supportsDynamicImport) {
+				const systemJsLoaderTag = document.createElement("script");
+				systemJsLoaderTag.src =
+					"https://unpkg.com/systemjs@2.0.0/dist/s.min.js";
+				systemJsLoaderTag.addEventListener("load", function () {
+					System.import("./front/build/nomodule/index.0b7a5fa8.js");
+				});
+				document.head.appendChild(systemJsLoaderTag);
+			}
+		</script>
+
+		<script type="text/javascript">
+			/// LinkedIn (part 1)
+			_linkedin_partner_id = "3734489";
+			window._linkedin_data_partner_ids =
+				window._linkedin_data_partner_ids || [];
+			window._linkedin_data_partner_ids.push(_linkedin_partner_id);
+		</script>
+
+		<script>
+			if (
+				!(
+					["localhost", "huggingface.test"].includes(
+						window.location.hostname
+					) || window.location.hostname.includes("ngrok.io")
+				)
+			) {
+				(function (i, s, o, g, r, a, m) {
+					i["GoogleAnalyticsObject"] = r;
+					(i[r] =
+						i[r] ||
+						function () {
+							(i[r].q = i[r].q || []).push(arguments);
+						}),
+						(i[r].l = 1 * new Date());
+					(a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+					a.async = 1;
+					a.src = g;
+					m.parentNode.insertBefore(a, m);
+				})(
+					window,
+					document,
+					"script",
+					"https://www.google-analytics.com/analytics.js",
+					"ganalytics"
+				);
+				ganalytics("create", "UA-83738774-2", "auto");
+				ganalytics("send", "pageview");
+
+				/// LinkedIn (part 2)
+				(function (l) {
+					if (!l) {
+						window.lintrk = function (a, b) {
+							window.lintrk.q.push([a, b]);
+						};
+						window.lintrk.q = [];
+					}
+					var s = document.getElementsByTagName("script")[0];
+					var b = document.createElement("script");
+					b.type = "text/javascript";
+					b.async = true;
+					b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+					s.parentNode.insertBefore(b, s);
+				})(window.lintrk);
+
+				/// Twitter
+				!(function (e, t, n, s, u, a) {
+					e.twq ||
+						((s = e.twq =
+							function () {
+								s.exe ? s.exe.apply(s, arguments) : s.queue.push(arguments);
+							}),
+						(s.version = "1.1"),
+						(s.queue = []),
+						(u = t.createElement(n)),
+						(u.async = !0),
+						(u.src = "//static.ads-twitter.com/uwt.js"),
+						(a = t.getElementsByTagName(n)[0]),
+						a.parentNode.insertBefore(u, a));
+				})(window, document, "script");
+				twq("init", "o6bfm");
+				twq("track", "PageView");
+			}
+		</script>
+
+		<noscript>
+			<!-- LinkedIn (part 3) -->
+			<img
+				height="1"
+				width="1"
+				style="display: none"
+				alt=""
+				src="https://px.ads.linkedin.com/collect/?pid=3734489&fmt=gif"
+			/>
+		</noscript>
+	
+
+<iframe name="__privateStripeMetricsController9160" frameborder="0" allowtransparency="true" scrolling="no" allow="payment *" src="./My Journey to a serverless transformers pipeline on Google Cloud_files/m-outer-c19b0c166354f5488c8a7f316eaada90.html" aria-hidden="true" tabindex="-1" style="border: none !important; margin: 0px !important; padding: 0px !important; width: 1px !important; min-width: 100% !important; overflow: hidden !important; display: block !important; visibility: hidden !important; position: fixed !important; height: 1px !important; pointer-events: none !important; user-select: none !important;"></iframe></body><grammarly-desktop-integration data-grammarly-shadow-root="true"></grammarly-desktop-integration></html>
