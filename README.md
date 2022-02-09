@@ -1,8 +1,15 @@
-***Under construction as of Feb. 9 2022***
 
 # NOLEdge 🧠 🔎 📖
 
 This repository hosts the source code, paper, and other documents created to support my Honors in the Major Thesis at Florida State University (home of the [Noles](https://seminoles.com)). 
+
+Here's a screenshot of the demo Chrome Extension frontend for NOLEDGE:
+
+![](./furc-poster/imgs/chromeextension.png)
+
+And the Streamlit app that comes prepackaged with the [Deepset AI Haystack Docker Image](https://github.com/deepset-ai/haystack):
+
+![](./furc-poster/imgs/streamlit.png)
 
 ## Contents of Repository:
 
