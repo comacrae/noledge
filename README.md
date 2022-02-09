@@ -6,19 +6,33 @@ This repository hosts the source code, paper, and other documents created to sup
 
 ## Contents of Repository:
 
-### [**Helpful Articles**](https://github.com/comacrae/noledge/tree/main/helpful-articles): Tutorials I used while implementing my deployment
+### [Helpful Articles](https://github.com/comacrae/noledge/tree/main/helpful-articles)
 
-### [**FURC Poster**](): The poster, images, and Bibtex reference for my presentation at [FURC 2022](https://www.floridaundergradresearch.org/furc22).
+Tutorials I used while implementing my deployment
 
-### [**Scripts**](): Scripts for a Flask deployment demo (now deprecated, but was the original method of deployment before Haystack 1.0 was released) and a ScraPy scraper which can clean up webscraped text.
+### [FURC Poster](https://github.com/comacrae/noledge/tree/main/furc-poster)
 
-### [**Corpus**](): The documents used as the corpus for NOLEdge, as well as the source of documents to annotate for training.
+The poster, images, and Bibtex reference for my presentation at [FURC 2022](https://www.floridaundergradresearch.org/furc22).
 
-### [**Colab Notebooks**](): The Google Colab notebooks I used for the majority of my workflow, from training to evaluating models and creating plots.
+### [Scripts](https://github.com/comacrae/noledge/tree/main/scripts)
 
-### [**Chrome Extension**](): The source code for the demo Chrome Extension I used to deploy my finetuned model.
+Scripts for a Flask deployment demo (now deprecated, but was the original method of deployment before Haystack 1.0 was released) and a ScraPy scraper which can clean up webscraped text.
 
-### [**Thesis**](): Final draft of my Honors in the Major thesis as well as images and Bibtex references
+### [Corpus](https://github.com/comacrae/noledge/tree/main/cs-fsu-domain-corpus)
+
+The documents used as the corpus for NOLEdge, as well as the source of documents to annotate for training.
+
+### [Colab Notebooks](https://github.com/comacrae/noledge/tree/main/chrome-extension)
+
+The Google Colab notebooks I used for the majority of my workflow, from training to evaluating models and creating plots.
+
+### [Chrome Extension](https://github.com/comacrae/noledge/tree/main/chrome-extension)
+
+The source code for the demo Chrome Extension I used to deploy my finetuned model.
+
+### [Thesis](https://github.com/comacrae/noledge/tree/main/thesis)
+
+Final draft of my Honors in the Major thesis as well as images and Bibtex references.
 
 ## Hugging Face Model
 [Go here to check out/download my finetuned model](https://huggingface.co/comacrae/roberta-paraphrasev2)
